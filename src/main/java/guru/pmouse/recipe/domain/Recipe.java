@@ -1,6 +1,7 @@
 package guru.pmouse.recipe.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Guru Mouse on 12/12/2019
@@ -24,6 +25,9 @@ public class Recipe {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingredient> ingredients;
 
     public Long getId() {
         return id;
