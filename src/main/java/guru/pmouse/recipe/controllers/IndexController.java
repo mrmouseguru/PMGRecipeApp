@@ -1,37 +1,25 @@
 package guru.pmouse.recipe.controllers;
 
-import guru.pmouse.recipe.domain.Category;
-import guru.pmouse.recipe.domain.UnitOfMeasure;
-import guru.pmouse.recipe.repositories.CategoryRepository;
-import guru.pmouse.recipe.repositories.UnitOfMeasureRepository;
+import guru.pmouse.recipe.services.RecipeService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Optional;
 
 /**
  * Created by Guru Mouse on 12/07/2019
  */
 @Controller
 public class IndexController {
+    private final RecipeService recipeService;
 
-    private CategoryRepository categoryRepository;
-    private UnitOfMeasureRepository unitOfMeasureRepository;
-
-    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
+    public IndexController(RecipeService recipeService) {
+        this.recipeService = recipeService;
     }
 
     @RequestMapping({"", "/", "index", "index.html"})
-    public String getIndexPage(){
+    public String getIndexPage(Model model){
 
-        Optional<Category> category = categoryRepository.findByDescription("American");
-        Optional<UnitOfMeasure> unitOfMeasure = unitOfMeasureRepository.findByDescription("Teaspoon");
-
-        System.out.println("Cat Id: " + category.get().getId());
-        System.out.println("UOM Id: " + unitOfMeasure.get().getId());
-
+        model.addAttribute("recipes", recipeService.getRecipes());
         return "index";
     }
 }
