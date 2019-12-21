@@ -1,11 +1,14 @@
 package guru.pmouse.recipe.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Set;
 
 /**
  * Created by PMouse Guru  on 12/19/2019
  */
+@Data
 @Entity
 public class Category {
 
@@ -18,27 +21,4 @@ public class Category {
 
     private Set<Recipe> recipes;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Recipe> getRecipes() {
-        return recipes;
-    }
-
-    public void setRecipes(Set<Recipe> recipes) {
-        this.recipes = recipes;
-    }
 }

@@ -1,5 +1,7 @@
 package guru.pmouse.recipe.domain;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 /**
  * Created by PMouse Guru  on 12/19/2019
  */
+@Data
 @Entity
 public class UnitOfMeasure {
     @Id
@@ -17,20 +20,4 @@ public class UnitOfMeasure {
 
     //@OneToOne
     //private Ingredient ingredient;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
