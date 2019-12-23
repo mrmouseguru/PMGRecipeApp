@@ -2,15 +2,16 @@ package guru.pmouse.recipe.services;
 
 import guru.pmouse.recipe.domain.Recipe;
 import guru.pmouse.recipe.repositories.RecipeRepository;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -43,6 +44,22 @@ class RecipeServiceImplTest {
         assertEquals(recipes.size(), 1);
 
         verify(recipeRepository, times(1)).findAll();
+
+    }
+
+    @Test
+    void findById() {
+        Recipe returnRecipe = Recipe.builder().id(1L).build();
+        //when
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(returnRecipe));
+
+        Recipe recipe = recipeService.findById(1L);
+
+        assertNotNull(recipe,"Not null returned");
+        assertNotNull(recipe.getId());
+        verify(recipeRepository).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
+
 
     }
 }

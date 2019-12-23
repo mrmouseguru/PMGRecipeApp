@@ -1,16 +1,21 @@
 package guru.pmouse.recipe.domain;
 
-import lombok.Data;
-
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Created by Guru Mouse on 12/12/2019
  */
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Recipe {
 
     @Id
