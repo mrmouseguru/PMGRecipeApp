@@ -1,10 +1,9 @@
 package guru.pmouse.recipe.domain;
 
+import java.math.BigDecimal;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * Created by PMouse Guru  on 12/17/2019
@@ -23,7 +22,7 @@ public class Ingredient {
     @ManyToOne
     private Recipe recipe;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private UnitOfMeasure uom;
 
     public Ingredient() {

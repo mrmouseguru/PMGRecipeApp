@@ -1,9 +1,8 @@
 package guru.pmouse.recipe.domain;
 
+import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.*;
 
 /**
  * Created by PMouse Guru  on 12/12/2019
@@ -21,9 +20,4 @@ public class Notes {
 
     @Lob
     private String recipeNotes;
-
-    public Long getId() {
-        return id;
-    }
-
 }

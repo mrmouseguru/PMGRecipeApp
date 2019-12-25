@@ -53,6 +53,7 @@ class RecipeServiceImplTest {
         //when
         when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(returnRecipe));
 
+        //then
         Recipe recipe = recipeService.findById(1L);
 
         assertNotNull(recipe,"Not null returned");
