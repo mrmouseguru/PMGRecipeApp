@@ -24,6 +24,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class RecipeServiceImplTest {
+    public static final long ID = 1L;
     public static final long RECIPE_ID = 1L;
     public static final long RECIPE_COMMAND_ID = RECIPE_ID;
     public static final long SAVED_RECIPE_ID = 2L;
@@ -104,5 +105,19 @@ class RecipeServiceImplTest {
         verify(recipeCommandToRecipe, times(1)).convert(any());
         verify(recipeRepository, times(1)).save(any());
         verify(recipeToRecipeCommand, times(1)).convert(any());
+    }
+
+    @Test
+    void findRecipeCommandById() {
+        //given
+        RecipeCommand returnRecipeCommand = new RecipeCommand();
+        returnRecipeCommand.setId(RECIPE_COMMAND_ID);
+        //when
+        when(recipeToRecipeCommand.convert(any())).thenReturn(returnRecipeCommand);
+        RecipeCommand foundRecipeCommand = recipeService.findCommandById(RECIPE_COMMAND_ID);
+        //then
+        verify(recipeToRecipeCommand).convert(any());
+        assertNotNull(foundRecipeCommand);
+        assertEquals(RECIPE_COMMAND_ID, foundRecipeCommand.getId());
     }
 }

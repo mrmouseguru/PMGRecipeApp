@@ -44,4 +44,12 @@ public class RecipeController {
         return "redirect:/recipe/" + savedRecipeCommand.getId() + "/show" ;
     }
 
+    @RequestMapping("/recipe/{id}/update")
+    public String updateRecipe(@PathVariable Long id, Model model){
+
+        model.addAttribute("recipe", recipeService.findCommandById(id));
+
+        return "recipe/recipeform";
+    }
+
 }

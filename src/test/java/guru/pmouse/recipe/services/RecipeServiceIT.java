@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by PMouse Guru  on 12/26/2019
@@ -47,5 +48,24 @@ class RecipeServiceIT {
         assertEquals(testRecipeCommand.getId(), savedRecipeCommand.getId());
         assertEquals(testRecipeCommand.getCategories().size(), savedRecipeCommand.getCategories().size());
         assertEquals(testRecipeCommand.getIngredients().size(), savedRecipeCommand.getIngredients().size());
+    }
+
+    @Test
+    @Transactional
+    void findCommandById() {
+        //given
+        Iterable<Recipe> recipes = recipeRepository.findAll();
+        Recipe recipe = recipes.iterator().next();
+
+        RecipeCommand recipeCommand = recipeToRecipeCommand.convert(recipe);
+
+        //when
+        RecipeCommand foundRecipeCommand = recipeService.findCommandById(recipeCommand.getId());
+
+        //then
+        assertNotNull(foundRecipeCommand);
+
+        assertEquals(recipeCommand.getId(), foundRecipeCommand.getId());
+        assertEquals(recipeCommand.getIngredients().size(), foundRecipeCommand.getIngredients().size());
     }
 }
