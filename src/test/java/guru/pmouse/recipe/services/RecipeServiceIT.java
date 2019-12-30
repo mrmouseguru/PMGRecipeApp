@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by PMouse Guru  on 12/26/2019
@@ -67,5 +66,20 @@ class RecipeServiceIT {
 
         assertEquals(recipeCommand.getId(), foundRecipeCommand.getId());
         assertEquals(recipeCommand.getIngredients().size(), foundRecipeCommand.getIngredients().size());
+    }
+
+    @Test
+    @Transactional
+    void testDeleteRecipeById() {
+        //given
+        Iterable<Recipe> recipes = recipeRepository.findAll();
+        Recipe recipe = recipes.iterator().next();//get First
+        //when
+        Long id_Recipe_To_Delete = recipe.getId();
+        recipeService.deleteById(id_Recipe_To_Delete);
+        //then
+        Recipe foundRecipeAfterDelete = recipeService.findById(id_Recipe_To_Delete);
+        assertNull(foundRecipeAfterDelete);
+
     }
 }

@@ -120,4 +120,14 @@ class RecipeServiceImplTest {
         assertNotNull(foundRecipeCommand);
         assertEquals(RECIPE_COMMAND_ID, foundRecipeCommand.getId());
     }
+
+    @Test
+    void testDeleteRecipeById() {
+        //given
+        Long idToDelete = 1L;
+        //then
+        recipeService.deleteById(idToDelete);
+        //when
+        verify(recipeRepository, times(1)).deleteById(anyLong());
+    }
 }

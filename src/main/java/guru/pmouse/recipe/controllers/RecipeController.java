@@ -2,6 +2,7 @@ package guru.pmouse.recipe.controllers;
 
 import guru.pmouse.recipe.commands.RecipeCommand;
 import guru.pmouse.recipe.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Created by PMouse Guru  on 12/23/2019
  */
+@Slf4j
 @Controller
 public class RecipeController {
 
@@ -50,6 +52,14 @@ public class RecipeController {
         model.addAttribute("recipe", recipeService.findCommandById(id));
 
         return "recipe/recipeform";
+    }
+
+    @RequestMapping("/recipe/{id}/delete")
+    public String deleteById(@PathVariable Long id){
+        log.debug("Preparing for delete Recipe ...");
+        recipeService.deleteById(id);
+        log.debug("Deleted Recipe");
+        return "redirect:/";
     }
 
 }
