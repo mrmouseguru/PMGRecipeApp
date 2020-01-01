@@ -1,6 +1,8 @@
 package guru.pmouse.recipe.controllers;
 
+import guru.pmouse.recipe.commands.IngredientCommand;
 import guru.pmouse.recipe.commands.RecipeCommand;
+import guru.pmouse.recipe.services.IngredientService;
 import guru.pmouse.recipe.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,9 @@ class IngredientControllerTest {
     @InjectMocks
     IngredientController ingredientController;
 
+    @Mock
+    IngredientService ingredientService;
+
     MockMvc mockMvc;
 
     @BeforeEach
@@ -51,5 +56,19 @@ class IngredientControllerTest {
                 .andExpect(view().name("recipe/ingredient/list"))
                 .andExpect(model().attributeExists("recipe"));
         verify(recipeService).findCommandById(anyLong());
+    }
+
+    @Test
+    void testShowRecipeIngredient() throws Exception {
+        //given
+        IngredientCommand ingredientCommandReturn = new IngredientCommand();
+        ingredientCommandReturn.setId(1L);
+        //when
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommandReturn);
+
+        mockMvc.perform(get("/recipe/1/ingredient/2/show"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/show"))
+                .andExpect(model().attributeExists("ingredient"));
     }
 }

@@ -90,16 +90,17 @@ class RecipeServiceImplTest {
 
         RecipeCommand returnRecipeCommand = new RecipeCommand();
         returnRecipeCommand.setId(RECIPE_ID);
-        //when
+
         when(recipeCommandToRecipe.convert(any())).thenReturn(detachedRecipe);
 
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
 
         when(recipeToRecipeCommand.convert(any())).thenReturn(returnRecipeCommand);
 
+        //then
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
 
-        //then
+        //when
         assertNotNull(savedRecipeCommand);
         assertEquals(savedRecipeCommand.getId(), recipeCommand.getId());
         verify(recipeCommandToRecipe, times(1)).convert(any());

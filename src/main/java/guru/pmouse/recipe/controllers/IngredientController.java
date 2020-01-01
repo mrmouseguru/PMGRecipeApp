@@ -1,5 +1,6 @@
 package guru.pmouse.recipe.controllers;
 
+import guru.pmouse.recipe.services.IngredientService;
 import guru.pmouse.recipe.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +16,11 @@ public class IngredientController {
 
   private final RecipeService recipeService;
 
-    public IngredientController(RecipeService recipeService) {
+  private final IngredientService ingredientService;
+
+    public IngredientController(RecipeService recipeService, IngredientService ingredientService) {
         this.recipeService = recipeService;
+        this.ingredientService = ingredientService;
     }
 
     @GetMapping
@@ -25,4 +29,14 @@ public class IngredientController {
         model.addAttribute("recipe", recipeService.findCommandById(id));
         return "recipe/ingredient/list";
     }
+
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/{id}/show")
+    public String showRecipeIngredient(@PathVariable Long recipeId, @PathVariable Long id,
+                                 Model model){
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id) );
+        return "recipe/ingredient/show";
+    }
+
 }
