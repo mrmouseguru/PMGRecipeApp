@@ -95,7 +95,7 @@ class RecipeServiceImplTest {
 
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
 
-       // when(recipeToRecipeCommand.convert(any())).thenReturn(returnRecipeCommand);
+        when(recipeToRecipeCommand.convert(any())).thenReturn(returnRecipeCommand);
 
         //then
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
