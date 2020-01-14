@@ -1,7 +1,9 @@
 package guru.pmouse.recipe.services;
 
 import guru.pmouse.recipe.commands.IngredientCommand;
+import guru.pmouse.recipe.converters.IngredientCommandToIngredient;
 import guru.pmouse.recipe.converters.IngredientToIngredientCommand;
+import guru.pmouse.recipe.converters.UnitOfMeasureCommandToUnitOfMeasure;
 import guru.pmouse.recipe.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import guru.pmouse.recipe.domain.Ingredient;
 import guru.pmouse.recipe.domain.Recipe;
@@ -24,7 +26,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class IngredientServiceImplTest {
 
-    //@InjectMocks
+    // @InjectMocks
     IngredientServiceImpl ingredientService;
 
     @Mock
@@ -32,14 +34,21 @@ class IngredientServiceImplTest {
 
     IngredientToIngredientCommand ingredientToIngredientCommand;
 
+    IngredientCommandToIngredient ingredientCommandToIngredient;
+
+    @Mock
+    UnitOfMeasureCommandToUnitOfMeasure unitOfMeasureCommandToUnitOfMeasure;
+
     public IngredientServiceImplTest() {
         ingredientToIngredientCommand = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
+        ingredientCommandToIngredient = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
+
     }
 
     @BeforeEach
     void setUp() {
 
-        ingredientService = new IngredientServiceImpl(recipeRepository, ingredientToIngredientCommand);
+        ingredientService = new IngredientServiceImpl(recipeRepository, ingredientToIngredientCommand, ingredientCommandToIngredient, unitOfMeasureCommandToUnitOfMeasure);
 
     }
 
@@ -123,6 +132,36 @@ class IngredientServiceImplTest {
         assertEquals(2L, ingredientCommand.getId());
 
         // assertEquals(1L, ingredientCommand.getRecipeId());*/
+
+    }
+
+    @Test
+   // @Transactional
+    void testSaveIngredientCommand() {
+        //given
+
+        IngredientCommand command = new IngredientCommand();
+        command.setId(3L);
+        command.setRecipeId(2L);
+
+
+        Optional<Recipe> recipeOptional = Optional.of(new Recipe());
+
+        Recipe savedRecipe = new Recipe();
+        savedRecipe.addIngredient(new Ingredient());
+        savedRecipe.getIngredients().iterator().next().setId(3L);
+
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.save(any())).thenReturn(savedRecipe);
+
+        //when
+        IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
+
+        //then
+        assertEquals(3L, savedCommand.getId());
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).save(any(Recipe.class));
 
     }
 }

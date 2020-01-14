@@ -95,7 +95,7 @@ class RecipeServiceImplTest {
 
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
 
-        when(recipeToRecipeCommand.convert(any())).thenReturn(returnRecipeCommand);
+       // when(recipeToRecipeCommand.convert(any())).thenReturn(returnRecipeCommand);
 
         //then
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
@@ -105,7 +105,7 @@ class RecipeServiceImplTest {
         assertEquals(savedRecipeCommand.getId(), recipeCommand.getId());
         verify(recipeCommandToRecipe, times(1)).convert(any());
         verify(recipeRepository, times(1)).save(any());
-        verify(recipeToRecipeCommand, times(1)).convert(any());
+       // verify(recipeToRecipeCommand, times(1)).convert(any());
     }
 
     @Test
