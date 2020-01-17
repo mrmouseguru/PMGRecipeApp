@@ -110,4 +110,29 @@ public class IngredientServiceImpl implements IngredientService {
 
     }
 
+    @Override
+    public void deleteById(Long recipeId, Long idToDelete) {
+
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+        if(optionalRecipe.isPresent()){
+            Recipe recipe = optionalRecipe.get();
+            log.debug("Recipe found Id: " + recipe.getId());
+
+            Optional<Ingredient> optionalIngredient = recipe.getIngredients().stream()
+                    .filter(ingredient -> ingredient.getId().equals(idToDelete))
+                    .findFirst();
+
+            if(optionalIngredient.isPresent()){
+
+                log.debug("Ingredient found ");
+                Ingredient ingredientToDelete = optionalIngredient.get();
+                ingredientToDelete.setRecipe(null);
+                recipe.getIngredients().remove(optionalIngredient.get());
+                recipeRepository.save(recipe);
+            }
+        }else{
+            log.debug("Recipe Id Not found Id: " + recipeId);
+        }
+    }
+
 }
