@@ -1,6 +1,8 @@
 package guru.pmouse.recipe.controllers;
 
 import guru.pmouse.recipe.commands.IngredientCommand;
+import guru.pmouse.recipe.commands.RecipeCommand;
+import guru.pmouse.recipe.commands.UnitOfMeasureCommand;
 import guru.pmouse.recipe.services.IngredientService;
 import guru.pmouse.recipe.services.RecipeService;
 import guru.pmouse.recipe.services.UnitOfMeasureService;
@@ -61,6 +63,22 @@ public class IngredientController {
         log.debug("saved ingredient id: " + savedCommand.getId());
 
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    public String newIngredientForm(@PathVariable Long recipeId, Model model){
+
+        RecipeCommand recipeCommand = recipeService.findCommandById(recipeId);
+        //todo raise exception if null
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(recipeId);
+        model.addAttribute("ingredient", ingredientCommand);
+
+        //init uom
+        ingredientCommand.setUom(new UnitOfMeasureCommand());
+        model.addAttribute("uomList", unitOfMeasureService.findAll());
+        return "recipe/ingredient/ingredientform";
     }
 
 }
