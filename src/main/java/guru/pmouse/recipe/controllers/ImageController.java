@@ -1,7 +1,13 @@
 package guru.pmouse.recipe.controllers;
 
+import guru.pmouse.recipe.commands.RecipeCommand;
 import guru.pmouse.recipe.services.ImageService;
 import guru.pmouse.recipe.services.RecipeService;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,5 +41,25 @@ public class ImageController {
         imageService.saveImageFile(id, file);
         return "redirect:/recipe/" + id + "/show";
     }
+
+    @GetMapping("/recipe/{id}/recipeimage")
+    public void renderImageFromDB(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        RecipeCommand recipeCommand = recipeService.findCommandById(id);
+
+        byte[] byteArray = new byte[recipeCommand.getImage().length];
+
+        int i = 0;
+        for(Byte wrappedByte: recipeCommand.getImage()){
+            byteArray[i++] = wrappedByte; //auto unboxing
+        }
+
+        response.setContentType("image/jpeg");
+        InputStream inputStream = new ByteArrayInputStream(byteArray);
+        IOUtils.copy(inputStream, response.getOutputStream());
+    }
+
+
+
+
 
 }

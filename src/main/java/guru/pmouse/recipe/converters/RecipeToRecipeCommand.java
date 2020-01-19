@@ -39,6 +39,7 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         recipeCommand.setDirections(recipe.getDirections());
         recipeCommand.setDifficulty(recipe.getDifficulty());
         recipeCommand.setNotes(notesToNotesCommand.convert(recipe.getNotes()));
+        recipeCommand.setImage(recipe.getImage());
 
         if(recipe.getIngredients() != null &&
                 recipe.getIngredients().size() > 0 ){
