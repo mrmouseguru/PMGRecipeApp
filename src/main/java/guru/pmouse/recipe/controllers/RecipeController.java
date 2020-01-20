@@ -3,10 +3,12 @@ package guru.pmouse.recipe.controllers;
 import guru.pmouse.recipe.commands.RecipeCommand;
 import guru.pmouse.recipe.exceptions.NotfoundException;
 import guru.pmouse.recipe.services.RecipeService;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class RecipeController {
 
+    public static final String RECIPE_RECIPEFORM_URL = "recipe/recipeform";
     private final RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService) {
@@ -34,12 +37,20 @@ public class RecipeController {
     @GetMapping("/recipe/new")
     public String newRecipe(Model model){
         model.addAttribute("recipe", new RecipeCommand());
-        return "recipe/recipeform";
+        return RECIPE_RECIPEFORM_URL;
     }
 
     @PostMapping("recipe")
-    //@RequestMapping(name = "recipe", method = RequestMethod.POST)
-    public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand){
+    public String saveOrUpdate(@Valid  @ModelAttribute RecipeCommand recipeCommand, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            bindingResult.getAllErrors().forEach(objectError -> {
+                log.debug(objectError.toString());
+            });
+
+            return RECIPE_RECIPEFORM_URL;
+
+        }
 
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
 
@@ -51,7 +62,7 @@ public class RecipeController {
 
         model.addAttribute("recipe", recipeService.findCommandById(id));
 
-        return "recipe/recipeform";
+        return RECIPE_RECIPEFORM_URL;
     }
 
     @GetMapping("/recipe/{id}/delete")
