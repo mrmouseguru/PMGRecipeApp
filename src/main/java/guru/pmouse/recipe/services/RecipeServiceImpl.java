@@ -42,11 +42,11 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe findById(Long id) {
         //return recipeRepository.findById(id).orElse(null);
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
-        if(!recipeOptional.isPresent()){
-            throw  new NotfoundException("Recipe Not Found");
+        if (!recipeOptional.isPresent()) {
+            throw new NotfoundException("Recipe Not Found");
         }
 
-        return  recipeOptional.get();
+        return recipeOptional.get();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
 
-        Recipe detachedRecipe  = recipeCommandToRecipe.convert(recipeCommand);
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(recipeCommand);
 
         Recipe savedRecipe = recipeRepository.save(detachedRecipe);
 

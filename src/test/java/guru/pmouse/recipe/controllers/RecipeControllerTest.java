@@ -55,7 +55,17 @@ class RecipeControllerTest {
 
     @Test
     void testShowByIdNotFound() throws Exception {
-        Recipe returnRecipe = Recipe.builder().id(1L).build();
+        //when
+        when(recipeService.findById(anyLong())).thenThrow(NotfoundException.class);
+
+        //then
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
+
+    @Test
+    void testShowByIdNotFoundPage() throws Exception {
         //when
         when(recipeService.findById(anyLong())).thenThrow(NotfoundException.class);
 
@@ -112,4 +122,6 @@ class RecipeControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
     }
+
+
 }
