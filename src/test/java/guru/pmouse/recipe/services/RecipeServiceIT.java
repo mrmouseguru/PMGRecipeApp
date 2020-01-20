@@ -3,6 +3,7 @@ package guru.pmouse.recipe.services;
 import guru.pmouse.recipe.commands.RecipeCommand;
 import guru.pmouse.recipe.converters.RecipeToRecipeCommand;
 import guru.pmouse.recipe.domain.Recipe;
+import guru.pmouse.recipe.exceptions.NotfoundException;
 import guru.pmouse.recipe.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,8 +79,11 @@ class RecipeServiceIT {
         Long id_Recipe_To_Delete = recipe.getId();
         recipeService.deleteById(id_Recipe_To_Delete);
         //then
-        Recipe foundRecipeAfterDelete = recipeService.findById(id_Recipe_To_Delete);
-        assertNull(foundRecipeAfterDelete);
+        assertThrows(NotfoundException.class, ()->{
+            Recipe foundRecipeAfterDelete = recipeService.findById(id_Recipe_To_Delete);
+        });
+
+        //assertNull(foundRecipeAfterDelete);
 
     }
 }

@@ -4,8 +4,10 @@ import guru.pmouse.recipe.commands.RecipeCommand;
 import guru.pmouse.recipe.converters.RecipeCommandToRecipe;
 import guru.pmouse.recipe.converters.RecipeToRecipeCommand;
 import guru.pmouse.recipe.domain.Recipe;
+import guru.pmouse.recipe.exceptions.NotfoundException;
 import guru.pmouse.recipe.repositories.RecipeRepository;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe findById(Long id) {
-        return recipeRepository.findById(id).orElse(null);
+        //return recipeRepository.findById(id).orElse(null);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+        if(!recipeOptional.isPresent()){
+            throw  new NotfoundException("Recipe Not Found");
+        }
+
+        return  recipeOptional.get();
     }
 
     @Override

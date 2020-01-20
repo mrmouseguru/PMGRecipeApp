@@ -5,6 +5,7 @@ import guru.pmouse.recipe.repositories.RecipeRepository;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -21,6 +22,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
     public void saveImageFile(Long recipeId, MultipartFile file) {
         log.debug("Received a file");
         Recipe recipe = recipeRepository.findById(recipeId).get();

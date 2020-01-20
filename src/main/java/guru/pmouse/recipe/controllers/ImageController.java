@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Created by PMouse Guru  on 01/19/2020
  */
 @Controller
+@Slf4j
 public class ImageController {
     private final RecipeService recipeService;
     private final ImageService imageService;
@@ -44,6 +46,9 @@ public class ImageController {
 
     @GetMapping("/recipe/{id}/recipeimage")
     public void renderImageFromDB(@PathVariable Long id, HttpServletResponse response) throws IOException {
+
+        log.debug("preparing for render Image ...");
+
         RecipeCommand recipeCommand = recipeService.findCommandById(id);
 
         byte[] byteArray = new byte[recipeCommand.getImage().length];

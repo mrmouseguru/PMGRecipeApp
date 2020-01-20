@@ -2,6 +2,7 @@ package guru.pmouse.recipe.controllers;
 
 import guru.pmouse.recipe.commands.RecipeCommand;
 import guru.pmouse.recipe.domain.Recipe;
+import guru.pmouse.recipe.exceptions.NotfoundException;
 import guru.pmouse.recipe.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,17 @@ class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    void testShowByIdNotFound() throws Exception {
+        Recipe returnRecipe = Recipe.builder().id(1L).build();
+        //when
+        when(recipeService.findById(anyLong())).thenThrow(NotfoundException.class);
+
+        //then
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
