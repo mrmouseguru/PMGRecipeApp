@@ -65,6 +65,15 @@ class RecipeControllerTest {
     }
 
     @Test
+    void testShowByIdNumberFormatException() throws Exception {
+
+        //then
+        mockMvc.perform(get("/recipe/dsfdd/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
+    }
+
+    @Test
     void testShowByIdNotFoundPage() throws Exception {
         //when
         when(recipeService.findById(anyLong())).thenThrow(NotfoundException.class);
