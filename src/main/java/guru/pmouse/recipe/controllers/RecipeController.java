@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class RecipeController {
 
-    public static final String RECIPE_RECIPEFORM_URL = "recipe/recipeform";
+    public static final String RECIPE_FORM_URL = "recipe/recipeform";
     private final RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService) {
@@ -37,7 +37,7 @@ public class RecipeController {
     @GetMapping("/recipe/new")
     public String newRecipe(Model model){
         model.addAttribute("recipe", new RecipeCommand());
-        return RECIPE_RECIPEFORM_URL;
+        return RECIPE_FORM_URL;
     }
 
     @PostMapping("recipe")
@@ -48,7 +48,7 @@ public class RecipeController {
                 log.debug(objectError.toString());
             });
 
-            return RECIPE_RECIPEFORM_URL;
+            return RECIPE_FORM_URL;
 
         }
 
@@ -62,7 +62,7 @@ public class RecipeController {
 
         model.addAttribute("recipe", recipeService.findCommandById(id));
 
-        return RECIPE_RECIPEFORM_URL;
+        return RECIPE_FORM_URL;
     }
 
     @GetMapping("/recipe/{id}/delete")
